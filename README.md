@@ -6,6 +6,7 @@ In addition it creates a sitemap-index.xml file that points to these sitemaps an
 
 Usage
 Run the script
+
 ```Z:\Websites\sitemaps>perl sitemaps-gen.pl```
 
 Once the script has run it's course copy the files to the /sitemaps/ folder on the web server
