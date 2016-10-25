@@ -1,4 +1,3 @@
-#main site
 my @urls = ('http://livelb.nationalarchives.gov.uk/page-sitemap1.xml',
 			'http://livelb.nationalarchives.gov.uk/page-sitemap2.xml',
 			'http://livelb.nationalarchives.gov.uk/page-sitemap3.xml',
@@ -8,6 +7,9 @@ use XML::Parser;
 use URI;
 use File::stat;
 use Time::localtime;
+
+# grab the Yoast generated sitemaps for the main site and massage the URLs
+# into the appropriate form
 foreach my $url (@urls)
 	{
 	my $content = get $url;
@@ -31,7 +33,8 @@ foreach my $url (@urls)
 }
 print "main site done\n";
 
-#child sites
+# grab the Yoast generated sitemaps for the child sites and massage the URLs
+# into the appropriate form
 sub processchild {
 	my ($url, $prepath, $shortname) = @_;
 	print "processing " . $shortname . "...\n";
@@ -75,6 +78,10 @@ processchild('http://cabinet.livelb.nationalarchives.gov.uk/page-sitemap.xml', '
 processchild('http://great-wharton.livelb.nationalarchives.gov.uk/page-sitemap.xml', '/first-world-war/home-front-stories', 'great-wharton');
 print "child sites done\n";
 
+
+# get a list of all the sitemap files in the current directory and
+# create a sitemap-index file - this can include any additional 
+# sitemaps not created using this tool.
 opendir my $dir, "." or die "Cannot open directory";
 @files = grep(/sitemap[0-9]{0,1}\.xml$/,readdir($dir));
 closedir $dir;
@@ -94,5 +101,5 @@ $outfile .= "</sitemapindex>";
 open(my $handler, ">", "sitemap-index.xml") or die "couldn't open sitemap-index";
 print $handler $outfile;
 close $handler;
-
+print "sitemap index file written\nthe xml files are ready to be uploaded to the web server";
 
